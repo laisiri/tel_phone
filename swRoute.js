@@ -34,14 +34,14 @@ module.exports.swRoute = (req,res) => {
         })
         break;
 
-        case '/page-1':
+        case '/append':
             fs.readFile('./view/page1.html', (err, data) => {
                 if(err){
                     console.log(`${err.message}`);
                 }
                 res.writeHead(200,{'Content-Type':'text/html'});
                 res.write(data);
-                res.end(`finished page1.html`)
+                res.end(`finished append`)
     })
     break;
 
