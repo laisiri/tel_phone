@@ -1,6 +1,7 @@
 const fs = require('fs');
 const url = require('url');
 const http = require('http');
+//const { LOADIPHLPAPI } = require('node:dns');
 
 module.exports.swRoute = (req,res) => {
 
@@ -41,7 +42,7 @@ module.exports.swRoute = (req,res) => {
                 }
                 res.writeHead(200,{'Content-Type':'text/html'});
                 res.write(data);
-                res.end(`finished append`)
+                res.end()
     })
     break;
 
@@ -59,11 +60,44 @@ module.exports.swRoute = (req,res) => {
     case '/data':
         
         let qData = q.query;
-        console.log(`qData: ${qData.name}`);
+        console.log(`qData.name: ${qData.name}`);
+        console.log(`qData.lastName: ${qData.lastName}`);
+        //let qDataJson = JSON.stringify(qData);
+
+        fs.readFile( './model/list.json',(err, data)=>{
+            
+            if(err){
+                let arr = [];
+                arr.push(qData);
+                let arrJson = JSON.stringify(arr);
+                fs.writeFile('./model/list.json', arrJson, err => {
+                    if(err) throw err;
+                    console.log(`saved`);
+                    res.end();
+                } )
+
+            }
+            else{
+                let dataObj = JSON.parse(data);
+                dataObj.push(qData);
+                                
+                fs.writeFile('./model/list.json',JSON.stringify(dataObj), err => {
+                    if(err) throw err;
+                    console.log(`saved`);
+                    res.end();
+                })
+            }
+        })
+        fs.readFile('./view/page1.html', (err, data) => {
+            if(err){
+                console.log(`${err.message}`);
+            }
+            res.writeHead(200,{'Content-Type':'text/html'});
+            res.write(data);
+            res.end()
+})
            
-                res.writeHead(200,{'Content-Type':'text/plain'});
-                res.write(qData.name);
-                res.end(`finished `)
+                
     
     break;
 
