@@ -36,7 +36,7 @@ module.exports.swRoute = (req,res) => {
         break;
 
         case '/append':
-            fs.readFile('./view/page1.html', (err, data) => {
+            fs.readFile('./view/append.html', (err, data) => {
                 if(err){
                     console.log(`${err.message}`);
                 }
@@ -88,7 +88,7 @@ module.exports.swRoute = (req,res) => {
                 })
             }
         })
-        fs.readFile('./view/page1.html', (err, data) => {
+        fs.readFile('./view/append.html', (err, data) => {
             if(err){
                 console.log(`${err.message}`);
             }
