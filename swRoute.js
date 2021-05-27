@@ -13,7 +13,7 @@ module.exports.swRoute = (req,res) => {
         console.log(`req.url ${req.url}`);
         switch(qPath) {
 
-            case '/':
+            case '/main':
                 fs.readFile('./main.html', (err, data) => {
                     if(err){
                         console.log(`${err.message}`);
@@ -23,6 +23,17 @@ module.exports.swRoute = (req,res) => {
                     res.end(`finished main.html`)
         })
         break;
+
+            case '/mainEx.js':
+                fs.readFile('./mainEx.js', (err, data)=>{
+                    if(err) {
+                        console.log(err.message);
+                    }
+                    res.writeHead(200,{'Content-Type':'text/javascript'});
+                    res.write(data);
+                    res.end();
+                })
+        break;        
             
             case '/view/main.css':
                 fs.readFile('./view/main.css', (err, data) => {
@@ -100,10 +111,10 @@ module.exports.swRoute = (req,res) => {
                 
     
     break;
-
-
-    
+    default:
         
+        process.exit()
+ 
     }
 
     }
