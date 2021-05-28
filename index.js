@@ -4,12 +4,7 @@ const url = require('url');
 
 
 var sever = http.createServer((req, res) => {
-    /*
-    process.on('SIGTERM', () => {
-        server.close(() => {
-          console.log('Process terminated')
-        })
-      })*/
+    
     //parse req.url 
     let q = url.parse(req.url,true);
     //represent pathname of req

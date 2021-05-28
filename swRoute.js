@@ -4,15 +4,17 @@ const http = require('http');
 //const { LOADIPHLPAPI } = require('node:dns');
 
 module.exports.swRoute = (req,res) => {
-
+    //parse url
     let q = url.parse(req.url,true);
+    //defined path
     let qPath = q.pathname;
     console.log(`q.pathname = ${qPath}`);
 
     if( qPath !== '/favicon.ico'){
         console.log(`req.url ${req.url}`);
+        //hold all route with switch
         switch(qPath) {
-
+            //main page
             case '/main':
                 fs.readFile('./main.html', (err, data) => {
                     if(err){
@@ -20,7 +22,7 @@ module.exports.swRoute = (req,res) => {
                     }
                     res.writeHead(200,{'Content-Type':'text/html'});
                     res.write(data);
-                    res.end(`finished main.html`)
+                    res.end()
         })
         break;
 
@@ -55,9 +57,9 @@ module.exports.swRoute = (req,res) => {
                 res.write(data);
                 res.end()
     })
-    break;
+        break;
 
-    case '/view/page1.css':
+        case '/view/page1.css':
             fs.readFile('./view/page1.css', (err, data) => {
                 if(err){
                     console.log(`${err.message}`);
@@ -66,36 +68,38 @@ module.exports.swRoute = (req,res) => {
                 res.write(data);
                 res.end(`finished page1.css`)
     })
-    break;
+        break;
 
-    case '/data':
+        case '/data':
         
-        let qData = q.query;
-        console.log(`qData.name: ${qData.name}`);
-        console.log(`qData.lastName: ${qData.lastName}`);
+            let qData = q.query;
+            console.log(`qData.name: ${qData.name}`);
+            console.log(`qData.lastName: ${qData.lastName}`);
         //let qDataJson = JSON.stringify(qData);
 
-        fs.readFile( './model/list.json',(err, data)=>{
+                fs.readFile( './model/list.json',(err, data)=>{
             
-            if(err){
-                let arr = [];
-                arr.push(qData);
-                let arrJson = JSON.stringify(arr);
-                fs.writeFile('./model/list.json', arrJson, err => {
-                    if(err) throw err;
-                    console.log(`saved`);
-                    res.end();
-                } )
+                    if(err){
 
-            }
-            else{
-                let dataObj = JSON.parse(data);
-                dataObj.push(qData);
-                                
-                fs.writeFile('./model/list.json',JSON.stringify(dataObj), err => {
-                    if(err) throw err;
-                    console.log(`saved`);
-                    res.end();
+                        arr = [];
+                        arr.push(qData);
+                        let arrJson = JSON.stringify(arr);
+                        fs.writeFile('./model/list.json', arrJson, err => {
+
+                            if(err) throw err;
+                            console.log(`saved`);
+                            res.end();
+                            
+                        } )
+
+                        }else{
+
+                            let dataObj = JSON.parse(data);
+                            dataObj.push(qData);
+                            fs.writeFile('./model/list.json',JSON.stringify(dataObj), err => {
+                                if(err) throw err;
+                                console.log(`saved`);
+                                res.end();
                 })
             }
         })
@@ -107,12 +111,20 @@ module.exports.swRoute = (req,res) => {
             res.write(data);
             res.end()
 })
-           
-                
-    
-    break;
-    default:
+        fs.readFile('./mainEX.js', (err, data) => {
+            if(err) {
+                console.log(err);
+            }
+            res.writeHead(200,{'Content-Type':'text/javascript'})
+            res.write(data);
+            res.end();
+        })
+        break;
+
+        case '/edit'
         
+        default:
+
         process.exit()
  
     }
